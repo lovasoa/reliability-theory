@@ -18,3 +18,20 @@ Launch the program. Enter a system in the following syntax
 ```
 
 You can use parenthesis for more complex systems.
+
+## Exemples
+```
+> 1/2
+p_1 + p_2 - (p_1*p_2)
+```
+
+ ```
+> 0.1/0.1
+0.19
+ ```
+ 
+```
+> a/b (c 0.9)/d 0.99
+-0.99*(p_a*p_b*p_d) + -0.891*(p_a*p_b*p_c) + -0.891*(p_a*p_c*p_d) + -0.891*(p_b*p_c*p_d) + 0.891*(p_a*p_b*p_c*p_d) + 0.891*(p_a*p_c) + 0.891*(p_b*p_c) + 0.99*(p_a*p_d) + 0.99*(p_b*p_d)
+```
+
