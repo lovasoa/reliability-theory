@@ -124,6 +124,5 @@ parseElem s = case reads s of
                      in (Var name, rest)
 
 main = do
-    r <- getLine
-    print (toString $ simplify $ toFormula $ parseSch r)
-    main
+    interact
+      (toString.simplify.toFormula.parseSch)
