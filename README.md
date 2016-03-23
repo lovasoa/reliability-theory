@@ -16,3 +16,5 @@ Launch the program. Enter a system in the following syntax
 ```
 1 2/2/2 3 4
 ```
+
+You can use parenthesis for more complex systems.
