@@ -3,9 +3,9 @@ name: Haskell CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+    paths:
+      - '**.hs'
+      - '.github/workflows/haskell.yml'
 
 jobs:
   build:
@@ -33,9 +33,10 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ${{matrix.os}}-${{ matrix.binary_path }}
+        name: ${{matrix.os}}
         path: ${{ matrix.binary_path }}
   create_release:
+    if: github
     name: Create Release
     needs: build
     runs-on: ubuntu-latest
@@ -65,7 +66,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: windows-latest-reliability-theory.exe
+          asset_path: windows-latest/reliability-theory.exe
           asset_name: windows-latest-reliability-theory.exe
           asset_label: reliability-theory for Windows
           asset_content_type: application/vnd.microsoft.portable-executable
@@ -76,7 +77,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: macos-latest-reliability-theory
+          asset_path: macos-latest/reliability-theory
           asset_name: macos-latest-reliability-theory
           asset_label: Reliability-theory for MacOS
           asset_content_type: application/octet-stream
@@ -87,7 +88,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ubuntu-latest-reliability-theory
+          asset_path: ubuntu-latest/reliability-theory
           asset_name: ubuntu-latest-reliability-theory
           asset_label: reliability-theory for Linux
           asset_content_type: application/octet-stream
