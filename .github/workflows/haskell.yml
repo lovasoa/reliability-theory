@@ -6,11 +6,20 @@ on:
   pull_request:
     branches: [ master ]
 
+
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        include:
+          - os: windows-latest
+            binary_path: reliability-theory.exe
+          - os: macos-latest
+            binary_path: reliability-theory
+          - os: ubuntu-latest
+            binary_path: reliability-theory
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-haskell@v1
@@ -24,5 +33,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: reliability-theory-linux
-        path: ./reliability-theory
+        name: ${{matrix.os}}-${{ matrix.binary_path }}
+        path: ${{ matrix.binary_path }}
