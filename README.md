@@ -7,6 +7,10 @@ Given a system composed of several parallel or series subsystems, each of which 
 
 It contains a **literal expression simplificator**. So you can enter a system with both hard-coded and literal reliability values, the result will always be printed nicely.
 
+## Download
+
+You can download pre-built binaries for macos, windows and linux from the [release page](https://github.com/lovasoa/reliability-theory/releases/latest).
+
 ## How to use
 Launch the program. Enter a system in the following syntax
 ### Syntax
