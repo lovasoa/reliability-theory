@@ -54,8 +54,11 @@ jobs:
           draft: false
           prerelease: false
 
-      - uses: actions/download-artifact@v1
-        with: { name: windows-latest-reliability-theory.exe, path: . }
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+      
+      - run: ls -lah
+        
       - name: Upload Windows binary
         uses: lovasoa/upload-release-asset@851d9cc
         env:
@@ -67,8 +70,6 @@ jobs:
           asset_label: reliability-theory for Windows
           asset_content_type: application/vnd.microsoft.portable-executable
 
-      - uses: actions/download-artifact@v1
-        with: { name: macos-latest-reliability-theory, path: . }
       - name: Upload MacOs binary
         uses: lovasoa/upload-release-asset@851d9cc
         env:
@@ -80,8 +81,6 @@ jobs:
           asset_label: Reliability-theory for MacOS
           asset_content_type: application/octet-stream
 
-      - uses: actions/download-artifact@v1
-        with: { name: ubuntu-latest-reliability-theory, path: . }
       - name: Upload Linux binary
         uses: lovasoa/upload-release-asset@851d9cc
         env:
