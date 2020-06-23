@@ -24,8 +24,8 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-haskell@v1
       with:
-        ghc-version: '8.8.2'
-        cabal-version: '3.0'
+        ghc-version: '8.10.1'
+        cabal-version: '3.2.0.0'
 
     - name: Build
       run: ghc -O2 reliability-theory.hs
@@ -35,3 +35,60 @@ jobs:
       with:
         name: ${{matrix.os}}-${{ matrix.binary_path }}
         path: ${{ matrix.binary_path }}
+  create_release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: build-${{ github.sha }}
+          release_name: Build ${{ github.sha }}
+          body: Compilation 
+          draft: false
+          prerelease: false
+
+      - uses: actions/download-artifact@v1
+        with: { name: windows-latest-reliability-theory.exe, path: . }
+      - name: Upload Windows binary
+        uses: lovasoa/upload-release-asset@851d9cc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: windows-latest-reliability-theory.exe
+          asset_name: windows-latest-reliability-theory.exe
+          asset_label: reliability-theory for Windows
+          asset_content_type: application/vnd.microsoft.portable-executable
+
+      - uses: actions/download-artifact@v1
+        with: { name: macos-latest-reliability-theory, path: . }
+      - name: Upload MacOs binary
+        uses: lovasoa/upload-release-asset@851d9cc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: macos-latest-reliability-theory
+          asset_name: macos-latest-reliability-theory
+          asset_label: Reliability-theory for MacOS
+          asset_content_type: application/octet-stream
+
+      - uses: actions/download-artifact@v1
+        with: { name: ubuntu-latest-reliability-theory, path: . }
+      - name: Upload Linux binary
+        uses: lovasoa/upload-release-asset@851d9cc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ubuntu-latest-reliability-theory
+          asset_name: ubuntu-latest-reliability-theory
+          asset_label: reliability-theory for Linux
+          asset_content_type: application/octet-stream
